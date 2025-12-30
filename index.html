@@ -39,40 +39,18 @@
     if (sessionStorage.getItem("visitado")) return;
     sessionStorage.setItem("visitado", "true");
 
-    const url = "https://script.google.com/macros/s/AKfycbzfY1lH1syGPhSDmj4VwSSIaxx_l3AKOw3XBZ6HRu5r2cHLT2sOXqVe5ek3Wo80SBiv/exec";
-    const inicio = Date.now();
-    const origem = document.referrer || "direto";
+    const data = {
+      ua: navigator.userAgent,
+      os: navigator.platform,
+      screen: screen.width + "x" + screen.height,
+      lang: navigator.language,
+      url: location.href
+    };
 
-    // Função para enviar dados ao Apps Script
-    function enviarDados(extra = {}) {
-      const data = {
-        ua: navigator.userAgent,
-        os: navigator.platform,
-        screen: screen.width + "x" + screen.height,
-        lang: navigator.language,
-        url: location.href,
-        origem: origem,
-        ...extra
-      };
-      const params = new URLSearchParams(data).toString();
-      fetch(url + "?" + params).catch(()=>{});
-    }
+    const params = new URLSearchParams(data).toString();
 
-    // 1️⃣ Envia dados iniciais (sem tempo nem local)
-    enviarDados();
-
-    // 2️⃣ Solicita localização e envia tudo junto com tempo
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const tempo = Date.now() - inicio;
-        enviarDados({ tempo: tempo, local: pos.coords.latitude + "," + pos.coords.longitude });
-      },
-      (err) => {
-        const tempo = Date.now() - inicio;
-        enviarDados({ tempo: tempo, local: "desconhecido" });
-      }
-    );
-
+    fetch("https://script.google.com/macros/s/AKfycbzfY1lH1syGPhSDmj4VwSSIaxx_l3AKOw3XBZ6HRu5r2cHLT2sOXqVe5ek3Wo80SBiv/exec?" + params)
+      .catch(function(){});
   })();
   </script>
 
