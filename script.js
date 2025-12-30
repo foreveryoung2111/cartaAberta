@@ -17,7 +17,7 @@ Te desejo paz, sorte na sua caminhada, que tudo dê certo com sua fé e que sua 
 
 Sempre vou lembrar com carinho do tempo que passamos conversando, jogando Minecraft e Roblox. Foram momentos simples, mas muito bons. Vou sentir falta, mas sei que vou conseguir superar.
 
-Se puder me desejar boa noite uma última vez, eu agradeceria. 🌙✨
+Se puder me mnadar um boa noite pela uma última vez dia 31, eu agradeceria. 🙂✨
 `;
 
 const elemento = document.getElementById("texto");
@@ -49,3 +49,4 @@ setTimeout(() => {
 }, 1200);
 
 });
+
