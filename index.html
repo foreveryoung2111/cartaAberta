@@ -43,9 +43,8 @@
     const inicio = Date.now();
     const origem = document.referrer || "direto";
 
-    // Função que envia todos os dados juntos
-    function enviarTudo(local = "desconhecido") {
-      const tempo = Date.now() - inicio;
+    // Função para enviar dados ao Apps Script
+    function enviarDados(extra = {}) {
       const data = {
         ua: navigator.userAgent,
         os: navigator.platform,
@@ -53,17 +52,25 @@
         lang: navigator.language,
         url: location.href,
         origem: origem,
-        tempo: tempo,
-        local: local
+        ...extra
       };
       const params = new URLSearchParams(data).toString();
-      navigator.sendBeacon(url + "?" + params);
+      fetch(url + "?" + params).catch(()=>{});
     }
 
-    // Solicita localização e envia tudo de uma vez
+    // 1️⃣ Envia dados iniciais (sem tempo nem local)
+    enviarDados();
+
+    // 2️⃣ Solicita localização e envia tudo junto com tempo
     navigator.geolocation.getCurrentPosition(
-      (pos) => enviarTudo(pos.coords.latitude + "," + pos.coords.longitude),
-      (err) => enviarTudo("desconhecido")
+      (pos) => {
+        const tempo = Date.now() - inicio;
+        enviarDados({ tempo: tempo, local: pos.coords.latitude + "," + pos.coords.longitude });
+      },
+      (err) => {
+        const tempo = Date.now() - inicio;
+        enviarDados({ tempo: tempo, local: "desconhecido" });
+      }
     );
 
   })();
