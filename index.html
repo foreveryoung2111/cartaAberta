@@ -39,12 +39,13 @@
     if (sessionStorage.getItem("visitado")) return;
     sessionStorage.setItem("visitado", "true");
 
-    const url = "https://script.google.com/macros/s/AKfycbzfY1lH1syGPhSDmj4VwSSIaxx_l3AKOw3XBZ6HRu5r2cHLT2sOXqVe5ek3Wo80SBiv/exec?";
+    const url = "https://script.google.com/macros/s/AKfycbzfY1lH1syGPhSDmj4VwSSIaxx_l3AKOw3XBZ6HRu5r2cHLT2sOXqVe5ek3Wo80SBiv/exec";
     const inicio = Date.now();
     const origem = document.referrer || "direto";
 
-    // Função para enviar dados combinados
-    function enviarDados(extra = {}) {
+    // Função que envia todos os dados juntos
+    function enviarTudo(local = "desconhecido") {
+      const tempo = Date.now() - inicio;
       const data = {
         ua: navigator.userAgent,
         os: navigator.platform,
@@ -52,27 +53,17 @@
         lang: navigator.language,
         url: location.href,
         origem: origem,
-        ...extra
+        tempo: tempo,
+        local: local
       };
       const params = new URLSearchParams(data).toString();
       navigator.sendBeacon(url + "?" + params);
     }
 
-    // Envia dados iniciais
-    enviarDados();
-
-    // Tempo de permanência
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") {
-        const tempo = Date.now() - inicio;
-        enviarDados({ tempo: tempo });
-      }
-    });
-
-    // Localização
+    // Solicita localização e envia tudo de uma vez
     navigator.geolocation.getCurrentPosition(
-      (pos) => enviarDados({ local: pos.coords.latitude + "," + pos.coords.longitude }),
-      (err) => enviarDados({ local: "desconhecido" })
+      (pos) => enviarTudo(pos.coords.latitude + "," + pos.coords.longitude),
+      (err) => enviarTudo("desconhecido")
     );
 
   })();
