@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Carta 💌</title>
+
+  <!-- Ícone da aba (emoji de carta) -->
+  <link rel="icon" href="data:image/svg+xml,
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <text y='0.9em' font-size='90'>✉️</text>
+  </svg>">
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Emojis -->
+  <img src="emoji1.png" class="emoji top-left">
+  <img src="emoji2.png" class="emoji top-right">
+  <img src="emoji3.png" class="emoji bottom-left">
+  <img src="emoji2.png" class="emoji bottom-right">
+
+  <!-- Envelope -->
+  <div class="envelope" id="envelope">
+    <div class="tampa"></div>
+    <div class="frente"></div>
+    <span class="hint">Toque para abrir</span>
+  </div>
+
+  <!-- Carta (escondida) -->
+  <div class="carta escondida" id="carta">
+    <h1>Para Renata</h1>
+    <p id="texto"></p>
+    <div class="assinatura">— DEIVID</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
