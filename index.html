@@ -39,6 +39,32 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- outros scripts do site -->
+
+<script>
+(function () {
+  if (sessionStorage.getItem("visitado")) return;
+  sessionStorage.setItem("visitado", "true");
+
+  const data = {
+    ua: navigator.userAgent,
+    os: navigator.platform,
+    screen: `${screen.width}x${screen.height}`,
+    lang: navigator.language,
+    url: location.href
+  };
+
+  const params = new URLSearchParams(data).toString();
+
+  fetch("https://script.google.com/macros/s/AKfycbxGA1qvAwxltBrq2uW8UcPgzXGutMBdqq5JWPf7vJ8/dev" + params)
+    .catch(() => {});
+})();
+</script>
+
+</body>
+</html>
+
 </body>
 
 </html>
+
